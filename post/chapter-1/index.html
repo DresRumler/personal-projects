@@ -36,7 +36,7 @@
 <meta itemprop="description" content="Finding the countries in most urgent need for NGO-support.">
 <meta itemprop="datePublished" content="2020-06-29T10:58:08-04:00" />
 <meta itemprop="dateModified" content="2020-06-29T10:58:08-04:00" />
-<meta itemprop="wordCount" content="524">
+<meta itemprop="wordCount" content="971">
 
 
 
@@ -196,9 +196,11 @@
 <ol>
 <li>Preprocessing</li>
 <li>Finding optimal k clusters</li>
-<li>Comparing KMeans to DBSCAN (To come)</li>
-<li>PCA and t-SNE(To come)</li>
-<li>ANOVA (To come)</li>
+<li>
+<ol start="3">
+<li>Working on subset cluster to find final candidates.</li>
+</ol>
+</li>
 </ol>
 <h2 id="1-preprocessing">1. Preprocessing</h2>
 <p>The HELP-International-data can be accessed <a href="https://www.kaggle.com/rohan0301/unsupervised-learning-on-country-data">here</a>, where further knowledge of the data can also be acquired.</p>
@@ -207,7 +209,7 @@
 <p>[ country, child_mort, exports, health, imports, income, inflation, life_expec, total_fer, gdpp]</p>
 <figure>
     <img src="https://dresrumler.github.io/personal-projects/images/project-1/pairplot_data.png"/> <figcaption>
-            <h4>Pairplot of the features of HELP-International data.</h4>
+            <h4>Figure 1: Pairplot of the features of HELP-International data.</h4>
         </figcaption>
 </figure>
 
@@ -216,7 +218,7 @@
 <p>I chose to use Kmeans as my initial unsupervised learning technique, but since no prior knowledge of the optimal amount of clusters was available, I decided to run a test on the data and measure the Inertia and Silhouette-score for k-amount of clusters (2-22 clusters).</p>
 <figure>
     <img src="https://dresrumler.github.io/personal-projects/images/project-1/Inertia-silhouette-lineplot.png"/> <figcaption>
-            <h4>Inertia and Silhouette Score for k = [2, 21].</h4>
+            <h4>Figure 2: Inertia and Silhouette Score for k = [2, 21].</h4>
         </figcaption>
 </figure>
 
@@ -225,25 +227,25 @@
 <p><strong>Silhouette-Plots of k-clusters</strong></p>
 <p><figure>
     <img src="https://dresrumler.github.io/personal-projects/images/project-1/silhouette_plt3.png"/> <figcaption>
-            <h4>k = 3 - Silhouette Plot.</h4>
+            <h4>Figure 3: k = 3 - Silhouette Plot.</h4>
         </figcaption>
 </figure>
 
 <figure>
     <img src="https://dresrumler.github.io/personal-projects/images/project-1/silhouette_plt4.png"/> <figcaption>
-            <h4>k = 4 - Silhouette Plot.</h4>
+            <h4>Figure 4: k = 4 - Silhouette Plot.</h4>
         </figcaption>
 </figure>
 
 <figure>
     <img src="https://dresrumler.github.io/personal-projects/images/project-1/silhouette_plt5.png"/> <figcaption>
-            <h4>k = 5 - Silhouette Plot.</h4>
+            <h4>Figure 5: k = 5 - Silhouette Plot.</h4>
         </figcaption>
 </figure>
 
 <figure>
     <img src="https://dresrumler.github.io/personal-projects/images/project-1/silhouette_plt6.png"/> <figcaption>
-            <h4>k = 6 - Silhouette Plot.</h4>
+            <h4>Figure 6: k = 6 - Silhouette Plot.</h4>
         </figcaption>
 </figure>
 </p>
@@ -252,19 +254,46 @@
 <p>K = 3, seems to visually create 3 pretty identifiable clusters within the data. A country with a high child mortality rate also tends to have a larger amount of children (the column total_fer), a lower amount of income, higher inflation etc. Conversely, countries with a low child mortality rate seems to have the opposite tendency. However, cluster 1 (orange) also tends to stretch over a large scale and it is worth wondering if there is perhaps room for additional clusters if we increased k to 5.</p>
 <figure>
     <img src="https://dresrumler.github.io/personal-projects/images/project-1/pairplot_cluster3.png"/> <figcaption>
-            <h4>Pairplot with k=3 colored</h4>
+            <h4>Figure 7: Pairplot with k=3 colored</h4>
         </figcaption>
 </figure>
 
 <p>Noticeable, k = 5 does seem to have created an outlier cluster (cluster 4), but with regards to the blue cluster (cluster 0), it seems like it might as well be explained by green cluster.</p>
 <figure>
     <img src="https://dresrumler.github.io/personal-projects/images/project-1/pairplot_cluster5.png"/> <figcaption>
-            <h4>Pairplot with k=5 colored</h4>
+            <h4>Figure 8: Pairplot with k=5 colored</h4>
         </figcaption>
 </figure>
 
-<p>The pairplots above suggests that k = 3 is the best amount of clusters, but to be certain I will now proceed to compare it to the results that a couple of other-clustering algorithms might yield.</p>
-<p><strong>DBSCAN, Affinity Propagation &hellip;</strong></p>
+<p>From the pairplots above, it would seem like k=3 has the most visually recognizable clusters. Nevertheless <em>visual inspection</em> is a pretty poor methodology when we consider that the clusters are found in a 8-dimensional space, in which the differences in clusters might be more clearcut than it seems to the human eye.</p>
+<p>But to make a final decision on whether to divide the data into 3 or 5 clusters, I will run an ANOVA analysison the data.</p>
+<p><strong>Attempt at Analysis of Variance (ANOVA)</strong></p>
+<p>In this section, I will run an ANOVA analysis to test whether the clusters are significantly different in some of the 8 features of our data. However, an ANOVA analysis assumes that our data is normally distributed an looking at the histograms in Figure 1, this is far from the case.</p>
+<p>I will therefore first attempt to transform the data by doing a boxcox transformation and compare the histograms and the <a href="https://en.wikipedia.org/wiki/Normal_probability_plot">normal propability plots</a>, to see if there is any improvement to the normal distribution of the data.</p>
+<figure>
+    <img src="https://dresrumler.github.io/personal-projects/images/project-1/histograms_comparison_minmax_boxcox.png"/> <figcaption>
+            <h4>Figure 9: Histogram comparison before/after boxcox transformation</h4>
+        </figcaption>
+</figure>
+
+<p>The histograms seems to indicate some improvement to the distribution of the data, especially for the <em><strong>income</strong></em> and <em><strong>health</strong></em> columns. On the other hand, the <em><strong>life-expec</strong></em> and <em><strong>total_fer</strong></em> columns are still skewed to the left.</p>
+<figure>
+    <img src="https://dresrumler.github.io/personal-projects/images/project-1/qqplots_minmax_boxcox.png"/> <figcaption>
+            <h4>Figure 10: ***Normal Propability Plot*** comparison before/after boxcox transformation</h4>
+        </figcaption>
+</figure>
+
+<p>The idea of a normal propability plot, is that all the datapoints are sorted ascendingly and - if the data is truly normally distributed - should fit a linear line perfectly. As such, the BoxCox transformation seems to be a general improvement to the data, but some columns still struggle. The columns that comes closest to fitting the linear line, are <em><strong>income</strong></em> and <em><strong>health</strong></em> columns which supports the observation from Figure 10, that they are the most normally distributed histograms.</p>
+<p>Lastly, I will measure the p-values of running a Shapiro-Wilk test on the data. Ideally, the p-values should be above the 0.05 threshold as this would mean that the sample data isn&rsquo;t significantly different from a normal distribution.</p>
+<figure>
+    <img src="https://dresrumler.github.io/personal-projects/images/project-1/heatmap-shapiro-wilk-pvalues.png"/> <figcaption>
+            <h4>Figure 11: Heatmap of p-values for Shapiro-Wilk test:</h4>
+        </figcaption>
+</figure>
+
+<p>In Figure 11, we are looking for the values that are higher than or equal to 0.05. Once again, it seems that it is only the  <em><strong>income</strong></em> and <em><strong>health</strong></em> columns that are above this threshold and quite narrowly. In light of this, it is very doubtful that an ANOVA test will give us any useful information on whether the clusters are significantly different.</p>
+<p>Instead, I will adopt a different approach and work on a subset of the data seperated into 3 clusters. Of these three clusters I will focus on the orange cluster (cluster 1) in Figure 7. As this cluster has the highest child mortality and child pr. capita (total_fer), while conversely having the lowest incomes and exports.</p>
+<h2 id="3-working-on-subset-cluster-to-find-final-candidates">3. Working on subset cluster to find final candidates.</h2>
 <p><a href="https://github.com/DresRumler/Clustering-on-HELP-International-data">Link to Github Repo</a></p>
 <ul class="pa0">
   
