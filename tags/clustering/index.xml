@@ -18,8 +18,9 @@
       
       <guid>https://dresrumler.github.io/personal-projects/post/chapter-1/</guid>
       <description>Content:
- Preprocessing Finding optimal k clusters  Working on subset cluster to find final candidates.    1. Preprocessing The HELP-International-data can be accessed here, where further knowledge of the data can also be acquired.
-The basic goal of the exercise, is to decide on a number of countries that are to recieve NGO-funding. Given that the NGO has $10 million, my goal with this project is to try and find a tiny subset, ideally 2-3 countries that are most eligible for recieving the funding.</description>
+ Preprocessing Finding optimal k clusters Working on subset cluster to find final candidates (to come).  Summary:
+The basic goal of the exercise, is to decide on a number of countries that are to recieve NGO-funding. Given that the NGO has $10 million, my goal with this project is to try and find a tiny subset, ideally 2-3 countries that are most eligible for recieving the funding.
+The HELP-International-data can be accessed here, where further knowledge of the data can also be acquired.</description>
     </item>
     
   </channel>

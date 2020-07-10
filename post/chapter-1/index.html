@@ -36,11 +36,11 @@
 <meta itemprop="description" content="Finding the countries in most urgent need for NGO-support.">
 <meta itemprop="datePublished" content="2020-06-29T10:58:08-04:00" />
 <meta itemprop="dateModified" content="2020-06-29T10:58:08-04:00" />
-<meta itemprop="wordCount" content="971">
+<meta itemprop="wordCount" content="974">
 
 
 
-<meta itemprop="keywords" content="Clustering," /><meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Clustering,Silhouette Plots," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Clustering on HELP-International-data"/>
 <meta name="twitter:description" content="Finding the countries in most urgent need for NGO-support."/>
 
@@ -196,15 +196,12 @@
 <ol>
 <li>Preprocessing</li>
 <li>Finding optimal k clusters</li>
-<li>
-<ol start="3">
-<li>Working on subset cluster to find final candidates.</li>
+<li>Working on subset cluster to find final candidates (to come).</li>
 </ol>
-</li>
-</ol>
-<h2 id="1-preprocessing">1. Preprocessing</h2>
-<p>The HELP-International-data can be accessed <a href="https://www.kaggle.com/rohan0301/unsupervised-learning-on-country-data">here</a>, where further knowledge of the data can also be acquired.</p>
+<p><em><strong>Summary:</strong></em></p>
 <p>The basic goal of the exercise, is to decide on a number of countries that are to recieve NGO-funding. Given that the NGO has $10 million, my goal with this project is to try and find a tiny subset, ideally 2-3 countries that are most eligible for recieving the funding.</p>
+<p>The HELP-International-data can be accessed <a href="https://www.kaggle.com/rohan0301/unsupervised-learning-on-country-data">here</a>, where further knowledge of the data can also be acquired.</p>
+<h2 id="1-preprocessing">1. Preprocessing</h2>
 <p>The data consists of the columns:</p>
 <p>[ country, child_mort, exports, health, imports, income, inflation, life_expec, total_fer, gdpp]</p>
 <figure>
@@ -213,7 +210,7 @@
         </figcaption>
 </figure>
 
-<p>The last 9 columns is continuous data with large differences in scales and therefore for the remainder of this README, the data has been min-max normalized. This is generally considered a standard procedure, because it affects the distance-measures in the algorithms less.</p>
+<p>The last 9 columns is continuous data with large differences in scales and therefore for the remainder of this project, the data has been min-max normalized. This is generally considered a standard procedure, because it affects the distance-measures in the clustering-algorithms less.</p>
 <h2 id="2-find-optimal-k-of-clusters">2. Find optimal k of clusters.</h2>
 <p>I chose to use Kmeans as my initial unsupervised learning technique, but since no prior knowledge of the optimal amount of clusters was available, I decided to run a test on the data and measure the Inertia and Silhouette-score for k-amount of clusters (2-22 clusters).</p>
 <figure>
@@ -222,7 +219,7 @@
         </figcaption>
 </figure>
 
-<p>The results are summarized in the lineplot above, which includes the 95% confidence interval with a sample size of 20 for each k. This approach was chosen because Kmeans can vary greatly, due to the random initialization of centoids, which can affect the result of the algorithms greatly.</p>
+<p>The results are summarized in the lineplot above, which includes the 95% confidence interval with a sample size of 20 for each k. This approach was chosen because Kmeans can vary greatly, due to the random initialization of centoids.</p>
 <p>The motivation for plotting Inertia and the Silhouette scores, is to find the best tradeoff between the two. Given that we want a high silhouette score but a low inertia, I will take a closer look at the k-value-range [3-6].</p>
 <p><strong>Silhouette-Plots of k-clusters</strong></p>
 <p><figure>
@@ -251,14 +248,14 @@
 </p>
 <p>From the silhouette plots, the most promissing amount of clusters to be either 3 or 5.</p>
 <p><strong>Coloring the clusters on the pairplot</strong></p>
-<p>K = 3, seems to visually create 3 pretty identifiable clusters within the data. A country with a high child mortality rate also tends to have a larger amount of children (the column total_fer), a lower amount of income, higher inflation etc. Conversely, countries with a low child mortality rate seems to have the opposite tendency. However, cluster 1 (orange) also tends to stretch over a large scale and it is worth wondering if there is perhaps room for additional clusters if we increased k to 5.</p>
+<p>K = 3, seems to visually create 3 pretty identifiable clusters within the data (see Fig. 7). A country with a high child mortality rate also tends to have a larger amount of children per. capita. (the column total_fer), a lower amount of income, higher inflation etc. Conversely, countries with a low child mortality rate seems to have the opposite tendency. However, cluster 1 (orange) also tends to stretch over a large scale and it is worth wondering if there is perhaps room for additional clusters if we increased k to 5.</p>
 <figure>
     <img src="https://dresrumler.github.io/personal-projects/images/project-1/pairplot_cluster3.png"/> <figcaption>
             <h4>Figure 7: Pairplot with k=3 colored</h4>
         </figcaption>
 </figure>
 
-<p>Noticeable, k = 5 does seem to have created an outlier cluster (cluster 4), but with regards to the blue cluster (cluster 0), it seems like it might as well be explained by green cluster.</p>
+<p>Noticeably, k = 5 does seem to have created an outlier cluster (cluster 4), but with regards to the blue cluster (cluster 0), it seems like it might as well be explained by the green cluster.</p>
 <figure>
     <img src="https://dresrumler.github.io/personal-projects/images/project-1/pairplot_cluster5.png"/> <figcaption>
             <h4>Figure 8: Pairplot with k=5 colored</h4>
@@ -266,7 +263,7 @@
 </figure>
 
 <p>From the pairplots above, it would seem like k=3 has the most visually recognizable clusters. Nevertheless <em>visual inspection</em> is a pretty poor methodology when we consider that the clusters are found in a 8-dimensional space, in which the differences in clusters might be more clearcut than it seems to the human eye.</p>
-<p>But to make a final decision on whether to divide the data into 3 or 5 clusters, I will run an ANOVA analysison the data.</p>
+<p>But to make a final decision on whether to divide the data into 3 or 5 clusters, I will attempt to run an ANOVA analysis on the data.</p>
 <p><strong>Attempt at Analysis of Variance (ANOVA)</strong></p>
 <p>In this section, I will run an ANOVA analysis to test whether the clusters are significantly different in some of the 8 features of our data. However, an ANOVA analysis assumes that our data is normally distributed an looking at the histograms in Figure 1, this is far from the case.</p>
 <p>I will therefore first attempt to transform the data by doing a boxcox transformation and compare the histograms and the <a href="https://en.wikipedia.org/wiki/Normal_probability_plot">normal propability plots</a>, to see if there is any improvement to the normal distribution of the data.</p>
@@ -299,6 +296,10 @@
   
    <li class="list">
      <a href="https://dresrumler.github.io/personal-projects/tags/clustering" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Clustering</a>
+   </li>
+  
+   <li class="list">
+     <a href="https://dresrumler.github.io/personal-projects/tags/silhouette-plots" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Silhouette Plots</a>
    </li>
   
 </ul>
