@@ -3,6 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://dresrumler.github.io/personal-projects/tags/boxcox-transformation/</loc>
+    <lastmod>2020-06-29T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://dresrumler.github.io/personal-projects/tags/clustering/</loc>
     <lastmod>2020-06-29T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -11,6 +18,13 @@
   
   <url>
     <loc>https://dresrumler.github.io/personal-projects/post/chapter-1/</loc>
+    <lastmod>2020-06-29T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://dresrumler.github.io/personal-projects/tags/inertia/</loc>
     <lastmod>2020-06-29T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

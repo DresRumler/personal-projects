@@ -36,11 +36,11 @@
 <meta itemprop="description" content="Finding the countries in most urgent need for NGO-support.">
 <meta itemprop="datePublished" content="2020-06-29T10:58:08-04:00" />
 <meta itemprop="dateModified" content="2020-06-29T10:58:08-04:00" />
-<meta itemprop="wordCount" content="974">
+<meta itemprop="wordCount" content="976">
 
 
 
-<meta itemprop="keywords" content="Clustering,Silhouette Plots," /><meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Clustering,Silhouette Plots,BoxCox Transformation,Inertia," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Clustering on HELP-International-data"/>
 <meta name="twitter:description" content="Finding the countries in most urgent need for NGO-support."/>
 
@@ -265,7 +265,7 @@
 <p>From the pairplots above, it would seem like k=3 has the most visually recognizable clusters. Nevertheless <em>visual inspection</em> is a pretty poor methodology when we consider that the clusters are found in a 8-dimensional space, in which the differences in clusters might be more clearcut than it seems to the human eye.</p>
 <p>But to make a final decision on whether to divide the data into 3 or 5 clusters, I will attempt to run an ANOVA analysis on the data.</p>
 <p><strong>Attempt at Analysis of Variance (ANOVA)</strong></p>
-<p>In this section, I will run an ANOVA analysis to test whether the clusters are significantly different in some of the 8 features of our data. However, an ANOVA analysis assumes that our data is normally distributed an looking at the histograms in Figure 1, this is far from the case.</p>
+<p>In this section, I will attempt to run an ANOVA analysis to test whether the clusters are significantly different in some of the 8 features of our data. However, an ANOVA analysis assumes that our data is normally distributed and looking at the histograms in Figure 1, this is far from the case.</p>
 <p>I will therefore first attempt to transform the data by doing a boxcox transformation and compare the histograms and the <a href="https://en.wikipedia.org/wiki/Normal_probability_plot">normal propability plots</a>, to see if there is any improvement to the normal distribution of the data.</p>
 <figure>
     <img src="https://dresrumler.github.io/personal-projects/images/project-1/histograms_comparison_minmax_boxcox.png"/> <figcaption>
@@ -276,7 +276,7 @@
 <p>The histograms seems to indicate some improvement to the distribution of the data, especially for the <em><strong>income</strong></em> and <em><strong>health</strong></em> columns. On the other hand, the <em><strong>life-expec</strong></em> and <em><strong>total_fer</strong></em> columns are still skewed to the left.</p>
 <figure>
     <img src="https://dresrumler.github.io/personal-projects/images/project-1/qqplots_minmax_boxcox.png"/> <figcaption>
-            <h4>Figure 10: ***Normal Propability Plot*** comparison before/after boxcox transformation</h4>
+            <h4>Figure 10: Normal Propability Plot comparison before/after boxcox transformation</h4>
         </figcaption>
 </figure>
 
@@ -300,6 +300,14 @@
   
    <li class="list">
      <a href="https://dresrumler.github.io/personal-projects/tags/silhouette-plots" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Silhouette Plots</a>
+   </li>
+  
+   <li class="list">
+     <a href="https://dresrumler.github.io/personal-projects/tags/boxcox-transformation" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">BoxCox Transformation</a>
+   </li>
+  
+   <li class="list">
+     <a href="https://dresrumler.github.io/personal-projects/tags/inertia" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Inertia</a>
    </li>
   
 </ul>
